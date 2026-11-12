@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#e5b900">
+<title>Public Service Portal | South Chennai</title>
+<style>
+:root{--gold:#e5b900;--light:#fff4c2;--dark:#192735;--text:#222b34;--muted:#707b85;--line:#e3e7eb;--bg:#f3f5f7}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
+.top-line{height:6px;background:var(--dark)}
+header{background:linear-gradient(115deg,#f7d94e,#e5b900);padding:25px 18px}
+.header-inner{max-width:1150px;margin:auto;display:flex;align-items:center;gap:20px}
+.profile{width:100px;height:100px;border-radius:50%;object-fit:cover;border:4px solid white;flex-shrink:0}
+.header-text h1{font-size:clamp(19px,3vw,29px);margin:0 0 8px}
+.header-text p{margin:3px 0;font-size:13px;font-weight:bold}
+.header-label{margin-left:auto;text-align:right;font-size:11px;font-weight:bold;letter-spacing:1.5px;line-height:1.7}
+main{max-width:1150px;margin:30px auto;padding:0 18px 45px}
+.welcome{margin-bottom:22px}
+.welcome h2{margin:0;font-size:25px}
+.welcome p{color:var(--muted);font-size:13px}
+.layout{display:grid;grid-template-columns:245px minmax(0,1fr);gap:20px;align-items:start}
+.sidebar,.panel{background:white;border:1px solid var(--line);border-radius:15px;box-shadow:0 7px 25px #00000008}
+.sidebar{padding:14px;position:sticky;top:15px}
+.nav-heading{font-size:10px;font-weight:bold;letter-spacing:1.5px;color:#888;padding:10px}
+.nav-btn{width:100%;border:0;background:transparent;padding:14px 10px;margin:3px 0;border-radius:9px;text-align:left;font-size:13px;font-weight:bold;cursor:pointer;color:#3b4650}
+.nav-btn:hover{background:#f5f5f5}
+.nav-btn.active{background:var(--light);color:#29230d}
+.nav-icon{display:inline-grid;place-items:center;width:29px;height:29px;margin-right:9px;background:#edf0f2;border-radius:8px}
+.nav-btn.active .nav-icon{background:var(--gold)}
+.sidebar-note{border-top:1px solid var(--line);padding:15px 8px 5px;font-size:11px;color:var(--muted);margin-top:12px}
+.panel{padding:clamp(18px,3vw,30px)}
+.form-heading{border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:22px}
+.form-heading h3{font-size:22px;margin:0 0 6px}
+.form-heading p{font-size:12px;color:var(--muted);margin:0}
+.section-heading{font-size:11px;font-weight:bold;letter-spacing:1.4px;color:#967700;margin:23px 0 13px}
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field.full{grid-column:1/-1}
+label{font-size:12px;font-weight:bold}
+input,select,textarea{width:100%;border:1px solid #d7dce1;border-radius:9px;padding:12px;background:white;font-family:inherit;font-size:13px;outline:none;color:var(--text)}
+input,select{min-height:44px}
+textarea{min-height:100px;resize:vertical}
+input:focus,select:focus,textarea:focus{border-color:#c4a000;box-shadow:0 0 0 3px #e5b90022}
+.help{font-size:10px;color:#7b858e}
+.upload-box{background:#fafbfc;border:1px dashed #cbd2d8;border-radius:10px;padding:15px}
+.upload-box input[type=file]{border:0;background:transparent;padding:5px 0}
+.upload-buttons{display:flex;flex-wrap:wrap;gap:9px;margin-top:10px}
+.upload-btn{padding:10px 13px;border-radius:8px;border:1px solid #d6dce1;background:white;font-weight:bold;font-size:11px;cursor:pointer}
+.upload-btn.primary{background:var(--dark);color:white;border-color:var(--dark)}
+.file-status{margin-top:9px;font-size:11px;color:#52606b;overflow-wrap:anywhere}
+.camera-preview{display:none;width:100%;max-height:350px;object-fit:contain;background:#111;border-radius:10px;margin-top:12px}
+.consent{display:flex;align-items:flex-start;gap:9px;margin-top:20px;padding:13px;background:#fff9df;border:1px solid #eedf9e;border-radius:9px;font-size:11px;line-height:1.5}
+.consent input{width:16px;min-height:16px;margin:1px 0 0;flex-shrink:0}
+.consent label{font-weight:normal}
+.security-note{background:#f6f7f8;border-left:3px solid var(--gold);padding:12px;margin-top:13px;font-size:10px;color:#66717b;line-height:1.6}
+.actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin-top:23px}
+.btn{padding:13px 20px;border:0;border-radius:8px;font-size:12px;font-weight:bold;cursor:pointer}
+.btn-main{background:var(--gold);color:#202020}
+.btn-secondary{background:#edf0f2;color:#303a44}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.modal{display:none;position:fixed;inset:0;z-index:110;background:#0009;align-items:center;justify-content:center;padding:15px}
+.modal.show{display:flex}
+.modal-card{background:white;border-radius:15px;padding:25px;width:100%;max-width:430px;text-align:center;max-height:90vh;overflow:auto}
+.success-icon{width:52px;height:52px;border-radius:50%;background:#e4f5e8;color:#188344;display:grid;place-items:center;margin:auto auto 12px;font-size:26px}
+.reference{background:#fff4c2;border:1px dashed #c5a000;border-radius:9px;padding:15px;font-size:25px;font-weight:bold;margin:17px 0;overflow-wrap:anywhere}
+.modal-card p{font-size:12px;color:#68737d;line-height:1.6}
+.modal-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.status-message{display:none;padding:13px;border-radius:9px;margin-top:15px;font-size:12px;line-height:1.5}
+.status-message.error{display:block;background:#fff0f0;color:#a12626;border:1px solid #efcaca}
+.status-message.info{display:block;background:#fff9df;color:#735e00;border:1px solid #eedf9e}
+footer{text-align:center;padding:20px;color:#7a838c;font-size:10px}
+@media(max-width:760px){.header-label{display:none}.layout{grid-template-columns:1fr}.sidebar{position:static;display:grid;grid-template-columns:1fr 1fr;gap:4px}.nav-heading,.sidebar-note{grid-column:1/-1}}
+@media(max-width:480px){header{padding:18px 13px}.profile{width:75px;height:75px}.header-inner{gap:12px}.header-text p{font-size:11px}main{padding:0 11px 30px}.fields{grid-template-columns:1fr}.field.full{grid-column:auto}.panel{padding:17px}.nav-btn{font-size:11px;padding:10px 7px}}
+</style>
+</head>
+<body>
+<div class="top-line"></div>
+<header>
+<div class="header-inner">
+<img src="FB_IMG_1794132093678.jpg" alt="Profile photograph" class="profile">
+<div class="header-text">
+<h1>T. Sumathy (Alias) Thamizhachi Thangapandian</h1>
+<p>Member of Parliament</p>
+<p>South Chennai Parliamentary Constituency</p>
+</div>
+<div class="header-label">PUBLIC SERVICE<br>CONSTITUENCY CONNECT</div>
+</div>
+</header>
+<main>
+<div class="welcome">
+<h2>How may we assist you?</h2>
+<p>Select a service and submit your details to the office.</p>
+</div>
+<div class="layout">
+<nav class="sidebar">
+<div class="nav-heading">PUBLIC SERVICES</div>
+<button type="button" class="nav-btn active" data-type="visit"><span class="nav-icon">01</span>Public Visit</button>
+<button type="button" class="nav-btn" data-type="complaint"><span class="nav-icon">02</span>Complaint</button>
+<button type="button" class="nav-btn" data-type="appointment"><span class="nav-icon">03</span>Appointment</button>
+<button type="button" class="nav-btn" data-type="request"><span class="nav-icon">04</span>Public Request</button>
+<div class="sidebar-note">Please provide accurate information and attach only relevant documents.</div>
+</nav>
+<section class="panel">
+<div class="form-heading">
+<h3 id="formTitle">Public Visit Registration</h3>
+<p id="formDescription">Register your visit request.</p>
+</div>
+<form id="serviceForm">
+<div class="section-heading">PERSONAL INFORMATION</div>
+<div class="fields">
+<div class="field"><label for="name">Full Name *</label><input id="name" name="name" required maxlength="120" placeholder="Enter full name"></div>
+<div class="field"><label for="phone">Mobile Number *</label><input id="phone" name="phone" type="tel" inputmode="tel" required pattern="[0-9+() -]{8,18}" placeholder="Enter mobile number"></div>
+<div class="field full"><label for="address">Residential Address *</label><textarea id="address" name="address" required maxlength="1000" placeholder="Door number, street, area, city and PIN code"></textarea></div>
+<div class="field full"><label for="email">Email Address</label><input id="email" name="email" type="email" maxlength="150" placeholder="Enter email address"></div>
+</div>
+<div class="section-heading" id="serviceHeading">VISIT INFORMATION</div>
+<div class="fields">
+<div class="field full"><label id="categoryLabel" for="category">Reason for Visit *</label><select id="category" name="category" required></select></div>
+<div class="field full"><label id="detailsLabel" for="details">Reason in Detail *</label><textarea id="details" name="details" required maxlength="5000" placeholder="Explain why you wish to visit."></textarea></div>
+</div>
+<div class="section-heading">IDENTITY & SUPPORTING DOCUMENTS</div>
+<div class="fields">
+<div class="field full" id="identityWrap">
+<label>Identity Photograph (Optional)</label>
+<div class="upload-box">
+<div class="help">Capture a photograph using your mobile camera or choose an image from your gallery.</div>
+<div class="upload-buttons">
+<button type="button" class="upload-btn primary" id="openCamera">📷 Open Camera</button>
+<button type="button" class="upload-btn" id="openGallery">🖼 Choose from Gallery</button>
+</div>
+<video id="cameraPreview" class="camera-preview" autoplay playsinline muted></video>
+<canvas id="photoCanvas" hidden></canvas>
+<div class="upload-buttons" id="cameraControls" style="display:none">
+<button type="button" class="upload-btn primary" id="capturePhoto">Capture Photo</button>
+<button type="button" class="upload-btn" id="stopCamera">Close Camera</button>
+</div>
+<input type="file" id="galleryInput" accept="image/*" hidden>
+<div class="file-status" id="identityStatus">No photograph selected</div>
+</div>
+</div>
+<div class="field full">
+<label for="attachments">Supporting Documents / Audio / Images</label>
+<div class="upload-box">
+<input type="file" id="attachments" name="attachments" multiple accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt,.mp3,.m4a,.wav,.aac,.ogg">
+<span class="help">Images, PDF, Word, Excel and audio files. Multiple files supported. Maximum 4 MB per file.</span>
+<div class="file-status" id="attachmentStatus">No documents selected</div>
+</div>
+</div>
+</div>
+<div class="consent">
+<input type="checkbox" id="consent" required>
+<label for="consent">I confirm that the information provided is accurate and that I am authorised to share the attached documents. I understand that my submission will be sent to the office for review. Submission does not guarantee an appointment or approval.</label>
+</div>
+<div class="security-note">SECURITY NOTICE: Submit only information necessary for your request. Do not attach unnecessary sensitive personal documents. Your submitted information and files will be processed by the portal administrator.</div>
+<div id="statusMessage" class="status-message" role="status" aria-live="polite"></div>
+<div class="actions">
+<button type="reset" class="btn btn-secondary" id="clearButton">Clear Form</button>
+<button type="submit" class="btn btn-main" id="submitButton">Submit Application →</button>
+</div>
+</form>
+</section>
+</div>
+</main>
+<footer>Public Service Portal · South Chennai</footer>
+<div class="modal" id="successModal">
+<div class="modal-card">
+<div class="success-icon">✓</div>
+<h3 id="popupTitle">Thank You!</h3>
+<p id="thankYouMessage"></p>
+<p id="referenceLabel">YOUR VISITOR NUMBER</p>
+<div class="reference" id="referenceNumber"></div>
+<p id="dateInfo"></p><p id="timeInfo"></p><p id="serviceInfo"></p>
+<p id="popupNote">Please keep this number for reference.</p>
+<div class="modal-actions">
+<button class="btn btn-main" id="downloadReceipt">Download Receipt</button>
+<button class="btn btn-secondary" id="closeSuccess">Close</button>
+</div>
+</div>
+</div>
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxC3wreyg7-iIOyNqrgKKg080NGADCsd9sZWIGTji8wThR4Vfs80Kzpc5LMovOxSlxM/exec";
+const MAX_FILE_SIZE = 4 * 1024 * 1024;
+const MAX_TOTAL_SIZE = 8 * 1024 * 1024;
+
+const configurations = {
+visit:{title:"Public Visit Registration",description:"Register your visit to meet the Member of Parliament.",heading:"VISIT INFORMATION",category:"Reason for Visit *",options:["Meeting with the Member of Parliament","Constituency-related matter","Civic or public facility issue","Welfare scheme enquiry","Community or public event","Other"],details:"Reason in Detail *",placeholder:"Explain why you wish to visit.",thank:"Thank you for registering your visit.",referenceLabel:"YOUR VISITOR NUMBER"},
+complaint:{title:"Complaint Submission",description:"Submit a grievance for review.",heading:"COMPLAINT DETAILS",category:"Complaint Category *",options:["Roads and Infrastructure","Water Supply and Drainage","Electricity and Street Lighting","Sanitation and Public Health","Education","Public Transport","Welfare Scheme","Other"],details:"Complaint Description *",placeholder:"Explain the complaint, location and relevant details.",thank:"Thank you for submitting your complaint. Your complaint has been received for review.",referenceLabel:"SUBMISSION REFERENCE"},
+appointment:{title:"Appointment Request",description:"Request an appointment with the office.",heading:"APPOINTMENT DETAILS",category:"Appointment Purpose *",options:["Constituency Issue","Personal Representation","Organisation Meeting","Official or Institutional Meeting","Invitation or Event","Other"],details:"Meeting Request Details *",placeholder:"Explain the purpose of your meeting.",thank:"Thank you for submitting your appointment request. The office will review your request.",referenceLabel:"SUBMISSION REFERENCE"},
+request:{title:"Public Request",description:"Submit your request for consideration.",heading:"PUBLIC REQUEST DETAILS",category:"Request Category *",options:["Public Welfare","Education","Healthcare","Community Development","Infrastructure","Employment or Skill Development","Event Invitation","Other"],details:"Request Details *",placeholder:"Explain your request and who will benefit.",thank:"Thank you for submitting your public request. Your request has been received for review.",referenceLabel:"SUBMISSION REFERENCE"}
+};
+
+const get = id => document.getElementById(id);
+let activeService = "visit";
+let receipt = null;
+let selectedIdentity = null;
+let cameraStream = null;
+
+function showStatus(message,type){
+const box=get("statusMessage");box.textContent=message;box.className="status-message "+type;
+}
+function clearStatus(){
+const box=get("statusMessage");box.textContent="";box.className="status-message";
+}
+function stopCamera(){
+if(cameraStream){cameraStream.getTracks().forEach(track=>track.stop());cameraStream=null;}
+get("cameraPreview").srcObject=null;
+get("cameraPreview").style.display="none";
+get("cameraControls").style.display="none";
+}
+
+function switchService(type){
+stopCamera();activeService=type;
+const c=configurations[type];
+document.querySelectorAll(".nav-btn").forEach(btn=>btn.classList.toggle("active",btn.dataset.type===type));
+get("formTitle").textContent=c.title;
+get("formDescription").textContent=c.description;
+get("serviceHeading").textContent=c.heading;
+get("categoryLabel").textContent=c.category;
+get("detailsLabel").textContent=c.details;
+get("details").placeholder=c.placeholder;
+const category=get("category");category.innerHTML="";
+const firstOption=document.createElement("option");
+firstOption.value="";firstOption.textContent="Select an option";category.appendChild(firstOption);
+c.options.forEach(option=>{const item=document.createElement("option");item.value=option;item.textContent=option;category.appendChild(item);});
+get("identityWrap").style.display=type==="visit"?"flex":"none";
+get("serviceForm").reset();selectedIdentity=null;
+get("identityStatus").textContent="No photograph selected";
+get("attachmentStatus").textContent="No documents selected";
+clearStatus();
+}
+document.querySelectorAll(".nav-btn").forEach(btn=>btn.addEventListener("click",()=>switchService(btn.dataset.type)));
+
+get("openCamera").addEventListener("click",async()=>{
+if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
+alert("Camera is not supported here. Open the portal through HTTPS in Chrome and allow camera permission.");return;
+}
+try{
+stopCamera();
+cameraStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"}},audio:false});
+get("cameraPreview").srcObject=cameraStream;
+get("cameraPreview").style.display="block";
+get("cameraControls").style.display="flex";
+await get("cameraPreview").play();
+}catch(error){
+let message="Unable to open camera. ";
+if(error.name==="NotAllowedError")message+="Please allow camera permission in browser settings.";
+else if(error.name==="NotFoundError")message+="No camera was found on this device.";
+else message+="Please open this page through HTTPS and try again. "+error.message;
+alert(message);
+}
+});
+
+get("capturePhoto").addEventListener("click",()=>{
+const video=get("cameraPreview");
+if(!video.videoWidth){alert("Camera is not ready. Please try again.");return;}
+const canvas=get("photoCanvas");canvas.width=video.videoWidth;canvas.height=video.videoHeight;
+canvas.getContext("2d").drawImage(video,0,0);
+canvas.toBlob(blob=>{
+if(!blob){alert("Unable to capture photograph.");return;}
+selectedIdentity=new File([blob],"visitor-photo.jpg",{type:"image/jpeg"});
+get("identityStatus").textContent="Captured: visitor-photo.jpg";
+stopCamera();
+},"image/jpeg",0.85);
+});
+get("stopCamera").addEventListener("click",stopCamera);
+
+get("openGallery").addEventListener("click",()=>get("galleryInput").click());
+get("galleryInput").addEventListener("change",e=>{
+const file=e.target.files[0];if(!file)return;
+if(!file.type.startsWith("image/")){alert("Please select an image.");e.target.value="";return;}
+selectedIdentity=file;get("identityStatus").textContent="Selected: "+file.name;
+});
+
+get("attachments").addEventListener("change",e=>{
+const files=[...e.target.files];
+get("attachmentStatus").textContent=files.length?files.map(f=>f.name).join(", "):"No documents selected";
+});
+
+function fileToBase64(file){
+return new Promise((resolve,reject)=>{
+const reader=new FileReader();
+reader.onload=()=>{
+const result=String(reader.result);const base64=result.split(",")[1];
+if(!base64){reject(new Error("Unable to read file: "+file.name));return;}
+resolve({name:file.name,mimeType:file.type||"application/octet-stream",base64:base64});
+};
+reader.onerror=()=>reject(new Error("Unable to read file: "+file.name));
+reader.readAsDataURL(file);
+});
+}
+
+async function prepareFiles(){
+const files=[...get("attachments").files];
+if(selectedIdentity)files.unshift(selectedIdentity);
+let total=0;
+for(const file of files){
+if(file.size>MAX_FILE_SIZE)throw new Error(file.name+" exceeds the 4 MB file limit.");
+total+=file.size;
+}
+if(total>MAX_TOTAL_SIZE)throw new Error("Total upload size must not exceed 8 MB.");
+let identityPhoto=null;const supportingFiles=[];
+if(selectedIdentity)identityPhoto=await fileToBase64(selectedIdentity);
+for(const file of get("attachments").files)supportingFiles.push(await fileToBase64(file));
+return {identityPhoto,supportingFiles};
+}
+
+async function sendSubmission(payload){
+const response=await fetch(SCRIPT_URL,{
+method:"POST",
+headers:{"Content-Type":"text/plain;charset=utf-8"},
+body:JSON.stringify(payload),
+redirect:"follow"
+});
+if(!response.ok)throw new Error("Server returned HTTP "+response.status);
+const result=await response.json();
+if(!result.success)throw new Error(result.error||"Submission could not be completed.");
+return result;
+}
+
+function dateParts(date){
+return {
+date:date.toLocaleDateString("en-IN",{day:"2-digit",month:"long",year:"numeric"}),
+time:date.toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit",hour12:true})
+};
+}
+
+get("serviceForm").addEventListener("submit",async e=>{
+e.preventDefault();
+const form=get("serviceForm");
+if(!form.reportValidity())return;
+if(!get("consent").checked){alert("Please confirm the consent statement.");return;}
+const submitButton=get("submitButton");const clearButton=get("clearButton");
+submitButton.disabled=true;clearButton.disabled=true;submitButton.textContent="Submitting...";
+clearStatus();
+try{
+stopCamera();
+const formData=new FormData(form);const files=await prepareFiles();
+const payload={
+submissionType:activeService,
+visitorName:formData.get("name"),
+mobileNumber:formData.get("phone"),
+emailAddress:formData.get("email")||"",
+residentialAddress:formData.get("address"),
+category:formData.get("category"),
+details:formData.get("details"),
+identityPhoto:files.identityPhoto,
+supportingFiles:files.supportingFiles
+};
+showStatus("Sending your submission. Please wait...","info");
+const result=await sendSubmission(payload);
+const now=new Date();const parts=dateParts(now);
+receipt={
+reference:result.submissionId,
+service:configurations[activeService].title,
+name:payload.visitorName,
+mobile:payload.mobileNumber,
+date:parts.date,
+time:parts.time,
+category:payload.category,
+note:"Your submission has been received for office review. This is not a confirmed appointment."
+};
+get("referenceNumber").textContent=receipt.reference;
+get("dateInfo").textContent="Submission Date: "+parts.date;
+get("timeInfo").textContent="Submission Time: "+parts.time;
+get("serviceInfo").textContent=receipt.service;
+get("thankYouMessage").textContent="Thank you, "+receipt.name+". "+configurations[activeService].thank;
+get("popupTitle").textContent=activeService==="visit"?"Thank You for Visiting!":"Thank You!";
+get("referenceLabel").textContent=configurations[activeService].referenceLabel;
+get("popupNote").textContent=activeService==="visit"
+?"Please keep your visitor number. This confirms registration, not a confirmed meeting with the MP."
+:"Please keep this submission reference for future communication.";
+get("successModal").classList.add("show");
+showStatus("Submission completed successfully.","info");
+}catch(error){
+console.error("Submission error:",error);
+showStatus("Submission could not be confirmed. "+error.message+" Please do not submit repeatedly. Check the Google Sheet before trying again.","error");
+alert("Submission could not be confirmed.\n\n"+error.message+"\n\nPlease check with the office administrator before submitting again.");
+}finally{
+submitButton.disabled=false;clearButton.disabled=false;submitButton.textContent="Submit Application →";
+}
+});
+
+get("downloadReceipt").addEventListener("click",()=>{
+if(!receipt)return;
+const content="PUBLIC SERVICE PORTAL\n\n"+
+"Reference: "+receipt.reference+"\n"+
+"Service: "+receipt.service+"\n"+
+"Name: "+receipt.name+"\n"+
+"Mobile: "+receipt.mobile+"\n"+
+"Category: "+receipt.category+"\n"+
+"Date: "+receipt.date+"\n"+
+"Time: "+receipt.time+"\n\n"+receipt.note;
+const blob=new Blob([content],{type:"text/plain;charset=utf-8"});
+const url=URL.createObjectURL(blob);const a=document.createElement("a");
+a.href=url;a.download=receipt.reference+"-receipt.txt";
+document.body.appendChild(a);a.click();a.remove();
+setTimeout(()=>URL.revokeObjectURL(url),1000);
+});
+
+get("closeSuccess").addEventListener("click",()=>get("successModal").classList.remove("show"));
+get("successModal").addEventListener("click",e=>{
+if(e.target===get("successModal"))get("successModal").classList.remove("show");
+});
+
+get("serviceForm").addEventListener("reset",()=>{
+stopCamera();selectedIdentity=null;
+setTimeout(()=>{
+get("identityStatus").textContent="No photograph selected";
+get("attachmentStatus").textContent="No documents selected";
+clearStatus();
+},0);
+});
+
+switchService("visit");
+</script>
+</body>
+</html>
